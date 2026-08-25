@@ -14,6 +14,9 @@ FROM golang:1.25-alpine AS api-build
 
 WORKDIR /app
 COPY go.mod go.sum ./
+ENV GOPROXY=https://goproxy.cn,direct
+ENV GOSUMDB=off
+RUN go mod download
 COPY config ./config
 COPY handler ./handler
 COPY middleware ./middleware

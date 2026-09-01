@@ -1,0 +1,65 @@
+curl --url 'http://192.168.31.197:8800/v1/videos' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Authorization: Bearer 96cd885dc296a9244491e92cc10eb0c213103bf8d70798cb6ef543e06a42d4dc' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryJSwdtgIBy3nTEUAy' \
+  -H 'Origin: http://192.168.31.197:3000' \
+  -H 'Referer: http://192.168.31.197:3000/' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36' \
+  --data-raw $'------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="model"\r\n\r\nminimax-h3-turbo\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="prompt"\r\n\r\n以下是分镜脚本。全片10个分镜，每镜15秒，总时长2分30秒。\r\n\r\n════════════════════════════════════════\r\n《肿瘤的早期警示信号》科普动画 分镜脚本\r\n════════════════════════════════════════\r\n\r\n【基本信息】\r\n总时长：2分30秒（10镜 × 15秒）\r\n主角：林博士（医学博士，白大褂+听诊器），全片以全身形象出镜，负责全程讲解\r\n风格：2D医学科普动画（医学插画风），林博士居画面一侧，专业图文在另一侧展开\r\n字幕：全程大字幕，医学术语及关键数字标红/加粗强调\r\n内容结构：开场 → 总纲 → 六大警示信号 → 误区澄清（2-4周原则）→ 高危因素筛查 + 结尾\r\n\r\n────────────────────────────────\r\n分镜01（0:00–0:15） 开场\r\n────────────────────────────────\r\n景别：全身镜头，林博士从画面左侧走入中央\r\n画面：现代医学科普演播厅，背景大屏标题"肿瘤的早期警示信号"逐字亮起\r\n动作：林博士站定，抬手微笑致意\r\n台词："你有没有想过——一直咳不好的咳嗽、说不清的体重下降，是不是身体发出的警告？我是林博士，用两分钟带你看清肿瘤的早期警示信号。"\r\n图文：标题动画；角标"林博士 · 医学博士"\r\n字幕关键词：早期警示信号\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="seconds"\r\n\r\n16\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="size"\r\n\r\n720x1280\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="resolution_name"\r\n\r\n720p\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="preset"\r\n\r\nnormal\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy--\r\n' \
+  --insecure
+
+curl --url 'http://192.168.31.127:8800/v1/videos' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Authorization: Bearer 96cd885dc296a9244491e92cc10eb0c213103bf8d70798cb6ef543e06a42d4dc' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryJSwdtgIBy3nTEUAy' \
+  -H 'Origin: http://192.168.31.197:3000' \
+  -H 'Referer: http://192.168.31.197:3000/' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36' \
+  --data-raw $'------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="model"\r\n\r\nminimax-h3-turbo\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="prompt"\r\n\r\n以下是分镜脚本。全片10个分镜，每镜15秒，总时长2分30秒。\r\n\r\n════════════════════════════════════════\r\n《肿瘤的早期警示信号》科普动画 分镜脚本\r\n════════════════════════════════════════\r\n\r\n【基本信息】\r\n总时长：2分30秒（10镜 × 15秒）\r\n主角：林博士（医学博士，白大褂+听诊器），全片以全身形象出镜，负责全程讲解\r\n风格：2D医学科普动画（医学插画风），林博士居画面一侧，专业图文在另一侧展开\r\n字幕：全程大字幕，医学术语及关键数字标红/加粗强调\r\n内容结构：开场 → 总纲 → 六大警示信号 → 误区澄清（2-4周原则）→ 高危因素筛查 + 结尾\r\n\r\n────────────────────────────────\r\n分镜01（0:00–0:15） 开场\r\n────────────────────────────────\r\n景别：全身镜头，林博士从画面左侧走入中央\r\n画面：现代医学科普演播厅，背景大屏标题"肿瘤的早期警示信号"逐字亮起\r\n动作：林博士站定，抬手微笑致意\r\n台词："你有没有想过——一直咳不好的咳嗽、说不清的体重下降，是不是身体发出的警告？我是林博士，用两分钟带你看清肿瘤的早期警示信号。"\r\n图文：标题动画；角标"林博士 · 医学博士"\r\n字幕关键词：早期警示信号\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="seconds"\r\n\r\n16\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="size"\r\n\r\n720x1280\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="resolution_name"\r\n\r\n720p\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="preset"\r\n\r\nnormal\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy--\r\n' \
+  --insecure
+
+传入了seconds为16秒，但是返回的是5秒视频
+
+[ERROR] Failed to validate prompt for output 92:
+[ERROR] * LoadVideo 154:
+[ERROR]   - Exception when validating inner node: 'NoneType' object has no attribute 'endswith'
+[ERROR] * LoadVideo 155:
+[ERROR]   - Exception when validating inner node: 'NoneType' object has no attribute 'endswith'
+[ERROR] * LoadAudio 152:
+[ERROR]   - Exception when validating inner node: 'NoneType' object has no attribute 'endswith'
+[ERROR] * LoadAudio 151:
+[ERROR]   - Exception when validating inner node: 'NoneType' object has no attribute 'endswith'
+[ERROR] * LoadVideo 153:
+[ERROR]   - Exception when validating inner node: 'NoneType' object has no attribute 'endswith'
+[ERROR] * LoadAudio 150:
+[ERROR]   - Exception when validating inner node: 'NoneType' object has no attribute 'endswith'
+[ERROR] Output will be ignored
+[WARNING] invalid prompt: {'type': 'prompt_outputs_failed_validation', 'message': 'Prompt outputs failed validation', 'details': '', 'extra_info': {}}
+
+curl --url 'http://192.168.31.127:8800/v1/videos' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Authorization: Bearer 96cd885dc296a9244491e92cc10eb0c213103bf8d70798cb6ef543e06a42d4dc' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryJSwdtgIBy3nTEUAy' \
+  -H 'Origin: http://192.168.31.197:3000' \
+  -H 'Referer: http://192.168.31.197:3000/' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36' \
+  --data-raw $'------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="model"\r\n\r\nminimax-h3-turbo\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="prompt"\r\n\r\n以下是分镜脚本。全片10个分镜，每镜15秒，总时长2分30秒。\r\n\r\n════════════════════════════════════════\r\n《肿瘤的早期警示信号》科普动画 分镜脚本\r\n════════════════════════════════════════\r\n\r\n【基本信息】\r\n总时长：2分30秒（10镜 × 15秒）\r\n主角：林博士（医学博士，白大褂+听诊器），全片以全身形象出镜，负责全程讲解\r\n风格：2D医学科普动画（医学插画风），林博士居画面一侧，专业图文在另一侧展开\r\n字幕：全程大字幕，医学术语及关键数字标红/加粗强调\r\n内容结构：开场 → 总纲 → 六大警示信号 → 误区澄清（2-4周原则）→ 高危因素筛查 + 结尾\r\n\r\n────────────────────────────────\r\n分镜01（0:00–0:15） 开场\r\n────────────────────────────────\r\n景别：全身镜头，林博士从画面左侧走入中央\r\n画面：现代医学科普演播厅，背景大屏标题"肿瘤的早期警示信号"逐字亮起\r\n动作：林博士站定，抬手微笑致意\r\n台词："你有没有想过——一直咳不好的咳嗽、说不清的体重下降，是不是身体发出的警告？我是林博士，用两分钟带你看清肿瘤的早期警示信号。"\r\n图文：标题动画；角标"林博士 · 医学博士"\r\n字幕关键词：早期警示信号\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="seconds"\r\n\r\n16\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="size"\r\n\r\n720x1280\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="resolution_name"\r\n\r\n720p\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="preset"\r\n\r\nnormal\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy--\r\n' \
+  --insecure
+
+curl --url 'http://192.168.31.197:8800/v1/videos' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Authorization: Bearer 96cd885dc296a9244491e92cc10eb0c213103bf8d70798cb6ef543e06a42d4dc' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryJSwdtgIBy3nTEUAy' \
+  -H 'Origin: http://192.168.31.197:3000' \
+  -H 'Referer: http://192.168.31.197:3000/' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36' \
+  --data-raw $'------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="model"\r\n\r\nminimax-h3-turbo\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="prompt"\r\n\r\n以下是分镜脚本。全片10个分镜，每镜15秒，总时长2分30秒。\r\n\r\n════════════════════════════════════════\r\n《肿瘤的早期警示信号》科普动画 分镜脚本\r\n════════════════════════════════════════\r\n\r\n【基本信息】\r\n总时长：2分30秒（10镜 × 15秒）\r\n主角：林博士（医学博士，白大褂+听诊器），全片以全身形象出镜，负责全程讲解\r\n风格：2D医学科普动画（医学插画风），林博士居画面一侧，专业图文在另一侧展开\r\n字幕：全程大字幕，医学术语及关键数字标红/加粗强调\r\n内容结构：开场 → 总纲 → 六大警示信号 → 误区澄清（2-4周原则）→ 高危因素筛查 + 结尾\r\n\r\n────────────────────────────────\r\n分镜01（0:00–0:15） 开场\r\n────────────────────────────────\r\n景别：全身镜头，林博士从画面左侧走入中央\r\n画面：现代医学科普演播厅，背景大屏标题"肿瘤的早期警示信号"逐字亮起\r\n动作：林博士站定，抬手微笑致意\r\n台词："你有没有想过——一直咳不好的咳嗽、说不清的体重下降，是不是身体发出的警告？我是林博士，用两分钟带你看清肿瘤的早期警示信号。"\r\n图文：标题动画；角标"林博士 · 医学博士"\r\n字幕关键词：早期警示信号\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="seconds"\r\n\r\n16\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="size"\r\n\r\n720x1280\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="resolution_name"\r\n\r\n720p\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy\r\nContent-Disposition: form-data; name="preset"\r\n\r\nnormal\r\n------WebKitFormBoundaryJSwdtgIBy3nTEUAy--\r\n' \
+  --insecure

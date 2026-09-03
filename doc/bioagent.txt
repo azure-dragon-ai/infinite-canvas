@@ -1,0 +1,18 @@
+重建并重启 backend，然后验证：
+
+  Thought for 23s, ran 3 shell commands
+
+已修复，现在 GET /api/v1/tasks 返回 200（后端直连和 5190 前端代理都验证通过，当前为空列表 []）。
+
+原因
+
+重构后的前端门户（frontend/src/api/index.ts:122）调用 GET /tasks 拉取全部任务列表，但后端 tasks.py 只有创建（POST ""）和按 ID/分析查询的路由，没有 list-all 的 GET 路由——路径 /tasks 匹配到了 POST "" 路由所以返回 405。原项目 bioagent-os 同样缺这个端点，是新前端引入的契约。
+
+改动（两处）
+
+1. backend/app/crud/project.py — 新增 get_tasks(db, skip, limit, tenant_id, is_admin)，按 created_at 倒序，带租户隔离和分页
+2. backend/app/api/v1/endpoints/tasks.py — 新增 GET "" 路由 list_tasks，复用 _get_tenant_context，风格与 projects.py 的 list 端点一致
+
+随后 docker compose up -d --build backend 重建镜像生效。
+
+注意：celery-worker 用的是同一份代码构建的另一个镜像，这次改动只涉及 API 层、不影响 worker；如果希望两边镜像代码完全一致，可以再跑 docker compose up -d --build celery-worker。

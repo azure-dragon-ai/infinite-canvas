@@ -16,3 +16,101 @@
 随后 docker compose up -d --build backend 重建镜像生效。
 
 注意：celery-worker 用的是同一份代码构建的另一个镜像，这次改动只涉及 API 层、不影响 worker；如果希望两边镜像代码完全一致，可以再跑 docker compose up -d --build celery-worker。
+
+mkdir 肿瘤科普_视频 && cd 肿瘤科普_视频
+
+wget "http://192.168.31.197:8800/v1/videos/1f4562081a5a4fd983f2cc18e1ad8192/content" -o 01.mp4
+wget "http://192.168.31.197:8800/v1/videos/bad7830aca654dcd870d0ee83793dc40/content" -o 02.mp4
+wget "http://192.168.31.197:8800/v1/videos/e0f0a196c97d4c9cb47d526c02bf0153/content" -o 03.mp4
+wget "http://192.168.31.197:8800/v1/videos/c4ec4a7044ea4417a87fd630ebc53829/content" -o 04.mp4
+wget "http://192.168.31.197:8800/v1/videos/236fd39a859542d291b2bc160436309b/content" -o 05.mp4
+wget "http://192.168.31.197:8800/v1/videos/002ac90c222341c28ff430e52de30119/content" -o 06.mp4
+wget "http://192.168.31.197:8800/v1/videos/3521d4dbf7ea4ab58bf82402f21ca23f/content" -o 07.mp4
+wget "http://192.168.31.197:8800/v1/videos/2829ba5fc3f24a6eb1f12707d69eab80/content" -o 08.mp4
+wget "http://192.168.31.197:8800/v1/videos/40993a9c29524cdbadcc8695d3953148/content" -o 09.mp4
+wget "http://192.168.31.197:8800/v1/videos/369913afd916420cbc62dbd6951a2fe8/content" -o 10.mp4
+wget "http://192.168.31.197:8800/v1/videos/f286942495144d55809a72f84f733062/content" -o 11.mp4
+wget "http://192.168.31.197:8800/v1/videos/90ab309bac814ad5a2e73376e075a10f/content" -o 12.mp4
+wget "http://192.168.31.197:8800/v1/videos/a4aefad5899d4953a63bed92cb431396/content" -o 13.mp4
+wget "http://192.168.31.197:8800/v1/videos/5362914071f4496d9278a9b0998015a0/content" -o 14.mp4
+wget "http://192.168.31.197:8800/v1/videos/aee219a833ac42379a2f737fe8db113e/content" -o 15.mp4
+wget "http://192.168.31.197:8800/v1/videos/603cba787ea74c3abe91d71e22dac351/content" -o 16.mp4
+wget "http://192.168.31.197:8800/v1/videos/6d3f3d32736b430182adc0d57f25d658/content" -o 17.mp4
+wget "http://192.168.31.197:8800/v1/videos/9dce3df179154734b917c07dc90929c1/content" -o 18.mp4
+wget "http://192.168.31.197:8800/v1/videos/9590fdde427f42cab66b528306d96395/content" -o 19.mp4
+wget "http://192.168.31.197:8800/v1/videos/937d483a8e6448a683888a6c1d0a8b7b/content" -o 20.mp4
+wget "http://192.168.31.197:8800/v1/videos/d81688fec3a94787a2afb865e36d3216/content" -o 21.mp4
+wget "http://192.168.31.197:8800/v1/videos/f576e3c510494c019db4e02b8c3242ac/content" -o 22.mp4
+wget "http://192.168.31.197:8800/v1/videos/8577febfa34646ad9cc6a2e9aed22ff4/content" -o 23.mp4
+wget "http://192.168.31.197:8800/v1/videos/4ecad67623374f18a88e81cf4479f750/content" -o 24.mp4
+wget "http://192.168.31.197:8800/v1/videos/5b753e03f2054dff8876d3afc677fa6e/content" -o 25.mp4
+wget "http://192.168.31.197:8800/v1/videos/90699ffc059640df87d87834d68ad9e9/content" -o 26.mp4
+
+wget -O 1.mp4 "http://192.168.31.197:8800/v1/videos/1f4562081a5a4fd983f2cc18e1ad8192/content"
+
+558.6  gcc-aarch64-linux-gnu
+558.6  gcc
+558.6  gcc-14
+558.7 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14-aarch64-linux-gnu_14.2.0-19_arm64.deb  Connection failed [IP: 199.232.114.132 80]
+558.7 E: Sub-process /usr/bin/dpkg returned an error code (1)
+------
+[+] build 0/4
+ ⠙ Image bioagent-os1-celery-worker Building                                                                                                                                   559.9s
+ ⠙ Image bioagent-os1-backend       Building                                                                                                                                   559.9s
+ ⠙ Image bioagent-os1-admin         Building                                                                                                                                   559.9s
+ ⠙ Image bioagent-os1-frontend      Building                                                                                                                                   559.9s
+Dockerfile:9
+
+--------------------
+
+   8 |     # Acquire::Retries smooths over transient fetch failures of single .debs.
+
+   9 | >>> RUN set -e && \
+
+  10 | >>>     echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries && \
+
+  11 | >>>     SRC=""; \
+
+  12 | >>>     if [ -f /etc/apt/sources.list.d/debian.sources ]; then SRC=/etc/apt/sources.list.d/debian.sources; \
+
+  13 | >>>     elif [ -f /etc/apt/sources.list ]; then SRC=/etc/apt/sources.list; fi; \
+
+  14 | >>>     if [ -n "$SRC" ]; then \
+
+  15 | >>>       cp -a "$SRC" /tmp/apt-sources.bak && \
+
+  16 | >>>       sed -i 's|deb.debian.org|mirrors.ustc.edu.cn|g; s|security.debian.org|mirrors.ustc.edu.cn|g' "$SRC"; \
+
+  17 | >>>       apt-get update || { cp -a /tmp/apt-sources.bak "$SRC" && apt-get update; }; \
+
+  18 | >>>     else \
+
+  19 | >>>       apt-get update; \
+
+  20 | >>>     fi && \
+
+  21 | >>>     apt-get install -y --no-install-recommends --fix-missing \
+
+  22 | >>>     gcc \
+
+  23 | >>>     libpq-dev \
+
+  24 | >>>     curl \
+
+  25 | >>>     ca-certificates \
+
+  26 | >>>     && rm -rf /var/lib/apt/lists/*
+
+  27 |     
+
+--------------------
+
+target celery-worker: failed to solve: process "/bin/sh -c set -e &&     echo 'Acquire::Retries \"5\";' > /etc/apt/apt.conf.d/80-retries &&     SRC=\"\";     if [ -f /etc/apt/sources.list.d/debian.sources ]; then SRC=/etc/apt/sources.list.d/debian.sources;     elif [ -f /etc/apt/sources.list ]; then SRC=/etc/apt/sources.list; fi;     if [ -n \"$SRC\" ]; then       cp -a \"$SRC\" /tmp/apt-sources.bak &&       sed -i 's|deb.debian.org|mirrors.ustc.edu.cn|g; s|security.debian.org|mirrors.ustc.edu.cn|g' \"$SRC\";       apt-get update || { cp -a /tmp/apt-sources.bak \"$SRC\" && apt-get update; };     else       apt-get update;     fi &&     apt-get install -y --no-install-recommends --fix-missing     gcc     libpq-dev     curl     ca-certificates     && rm -rf /var/lib/apt/lists/*" did not complete successfully: exit code: 100
+
+
+
+View build details: docker-desktop://dashboard/build/default/default/nnz9nvflno2tug96az6mqcumo
+
+
+What's next:
+    Debug this Compose error with Gordon → docker ai "help me fix this compose error"

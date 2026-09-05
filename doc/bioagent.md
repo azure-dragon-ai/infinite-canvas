@@ -32,6 +32,12 @@ apt使用阿里云镜像
 docker compose build, celery-worker慢，apt使用http://deb.debian.org而不是阿里云
 docker compose build太慢了，变更部署方式，将容器和代码分离，如在主机执行npm run build，在docker-compose.yml中配置代码挂载
 上传与导入为什么只显示本地样本库，数据中div class="subpanel"应该提供新建数据集按钮，上传文件按钮，将div class="dt-list"的内容迁移到subpanel，删除div class="dt-list"，同时已有数据集应该显示在subpanel中，包括本地样本库，参考库，项目数据集
+数据删除<span class="act">上传</span>
+点击数据集进入数据集的详情页面，右侧tab中应该增加数据集浏览tab，浏览所选的数据集，上传与导入应该提供上传与导入功能而不是浏览本地样本库，点击左右本地样本库和参考库应该进入浏览本地样本库页面和参考库页面，本地样本库和参考库是公共数据集
+点击本地样本库后，无法点击项目数据集，点击没有反应
+画布编排很多功能不可用，查看bioagent-os的代码，补全功能
+画布编排选中节点应该高亮
+报告阅读很多功能不可用，查看bioagent-os的代码，补全功能
 ```
 
 ```shell

@@ -85,6 +85,11 @@ Status Code
 新会话hi，提示本会话尚未使用长期记忆（首次对话时自动携带当时的记忆内容），初次和大模型对话时，需要带上长期记忆内容，提供查询当前会话使用的长期记忆内容，冗余存储，更新长期记忆时，历史会话还是之前使用长期记忆
 会话页面，仍然提示本会话尚未使用长期记忆（首次对话时自动携带当时的记忆内容），我看接口https://bioagent-new.7otech.com/api/v1/chat-persist/sessions/sess-1788646067826-id9ui7接口包含memory_snapshot字段
 后台会话显示id数据错误，存在id为task-ev-verify的数据，id应保证唯一，不能重复，可以使用时间戳+随机数
+会话中长期记忆只存了memory_snapshot，应该同时保存长期记忆id以方便溯源
+技能，删除div class="subpanel"中添加按钮
+画布编排，项目pipelines列表，在鼠标悬停在pipeline后，在每个pipeline右侧增加三个点，点击三个点，应该显示置顶，删除，重命名等选项
+画布编排，节点以拖拉拽的方式添加到画布中
+提供接口文档
 ```
 
 ```shell

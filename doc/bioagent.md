@@ -93,6 +93,51 @@ Status Code
 1.项目会话，新建会话，聊天页面没有内容，同时后台显示会话id为undefined
 2.普通会话，新建会话一样没有响应，同时后台显示没有新增会话
 项目会话，新建会话，聊天页面仍然没有内容，同时后台显示会话id为undefined，请修复系统bug
+
+1.项目会话，新建会话，聊天页面没有内容，同时后台显示会话id为undefined
+2.普通会话，新建会话一样没有响应，同时后台显示没有新增会话
+https://bioagent-new.7otech.com/api/v1/chat/stream 返回event: start data: undefined
+curl --url 'https://bioagent-new.7otech.com/api/v1/chat/stream' \
+  -H 'accept: */*' \
+  -H 'accept-language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7' \
+  -H 'authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3ODg3OTg1MjEsInN1YiI6ImE4ZjY5NjdmLTIwNmMtNGI4Ni05MzU2LTg5MmZiMWQ5YmRlMCJ9.X9KLiKuG6IvjxkZ7O_R1JMTfG1zj5LPJyG-8fvnWhHM' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://bioagent-new.7otech.com' \
+  -H 'pragma: no-cache' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://bioagent-new.7otech.com/projects/0f1811eb-90d4-450f-9e92-917f40334732/chat' \
+  -H 'sec-ch-ua: "Chromium";v="152", "Not?A_Brand";v="24", "Google Chrome";v="152"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Windows"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36' \
+  --data-raw $'{"message":"hi","session_id":"undefined","project_id":"0f1811eb-90d4-450f-9e92-917f40334732","mode":"ask","context_attachments":[{"type":"environment","id":"browser-agent-runtime","label":"Agent 运行环境（浏览器）","sublabel":"数据获取指引","metadata":{"说明":"你运行在浏览器 Agent 环境中。需要数据时按以下指引获取，不要臆造不存在的项目/数据集/实验 id。","后端接口":"统一前缀 /api/v1，鉴权由前端自动携带 Bearer token。常用：GET /projects 项目列表；GET /datasets 数据集；GET /skills 技能注册表（含参数 schema）；GET /pipelines 已存流水线；GET /experiments 实验；本地样本库 GET /datasets/library/browse（文件以 library:// URI 零拷贝引用）；GET /memory-notes?project_id=.. 项目的长期记忆（Markdown 笔记，记录功能与操作）","浏览器本地存储":"localStorage[\'bioagent_current_project\']=当前项目 id；localStorage[\'bioagent_token\']=登录 token","当前项目":"id=0f1811eb-90d4-450f-9e92-917f40334732，name=生物分析（localStorage[\'bioagent_current_project\']=0f1811eb-90d4-450f-9e92-917f40334732）"}}]}'
+
+event: start
+data: undefined
+
+event: route
+data: {"route_type": "conversational", "intent": "mode_ask", "confidence": 1.0}
+
+data: Hello! It looks like you're using a bioinformatics platform in your browser. How can I assist you with your analysis today? If you need any help with accessing data, using the interface, or understanding the tools available, feel free to ask.
+
+event: done
+data: {"type": "done"}
+
+data: [DONE]
+
+普通会话和项目会话，新建会话，聊天页刚开始是空的，等接口返回才出现内容，应该先显示用户输入内容，然后提示大模型思考中，最后显示大模型回复
+
+请求v1/chat/stream时，context_attachments没有长期记忆内容
+
+由于是在浏览器中使用agent，所以需要告诉大模型agent可以从接口，本地浏览器获取需要的数据，比如当前项目可以从localStorage获取，接口文档 https://bioagent-new.7otech.com/docs，对于项目，画布，数据，技能，报告，运行记录等信息可以从接口获取
+如果大模型在后端无法从接口获取数据，则在聊天时先从浏览器本地获取登录凭证authorization，从接口中将登录凭证传入大模型，再由大模型从接口获取数据
+大模型从接口获取数据时报错了，Failed to list project files: object list can't be used in 'await' expression
+普通会话和项目会话，增加深度思考选项，选择深度思考时，应该在聊天对话中体现出来思考过程，用户可以查看思考过程的所有内容
+项目中含有数据集，但是大模型返回没有数据集，除了从接口获取数据，允许大模型提交shell或python脚本，在后端运行脚本，获取数据结果
 ```
 
 ```shell

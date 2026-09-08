@@ -119,3 +119,49 @@ What's next:
 ⏺ Please run /login · API Error: 403 You've reached your monthly usage limit for this billing cycle. Your quota will be refreshed in the next cycle. To continue now, purchase extra usage or upgrade your plan: https://www.kimi.com/membership/subscription?tab=quota
 
 403 You've reached your monthly usage limit for this billing cycle
+
+==> [frontend] npm run build …
+
+> bioagent-portal@0.1.0 build
+> vue-tsc --noEmit && vite build
+
+src/composables/useReplyFiles.ts:22:22 - error TS2551: Property 'rsplit' does not exist on type 'string'. Did you mean 'split'?
+
+22     const name = obj.rsplit('/', 1)[-1]
+                        ~~~~~~
+
+  node_modules/typescript/lib/lib.es5.d.ts:491:5
+    491     split(separator: string | RegExp, limit?: number): string[];
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    'split' is declared here.
+
+src/composables/useReplyFiles.ts:61:27 - error TS2551: Property 'rsplit' does not exist on type 'string'. Did you mean 'split'?
+
+61   a.download = objectName.rsplit('/', 1)[-1]
+                             ~~~~~~
+
+  node_modules/typescript/lib/lib.es5.d.ts:491:5
+    491     split(separator: string | RegExp, limit?: number): string[];
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    'split' is declared here.
+
+
+Found 2 errors in the same file, starting at: src/composables/useReplyFiles.ts:22
+
+==> [frontend] npm run build …
+
+> bioagent-portal@0.1.0 build
+> vue-tsc --noEmit && vite build
+
+src/composables/useReplyFiles.ts:23:22 - error TS2551: Property 'rsplit' does not exist on type 'string'. Did you mean 'split'?
+
+23     const ext = name.rsplit('.', 1)[-1].toLowerCase()
+                        ~~~~~~
+
+  node_modules/typescript/lib/lib.es5.d.ts:491:5
+    491     split(separator: string | RegExp, limit?: number): string[];
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    'split' is declared here.
+
+
+Found 1 error in src/composables/useReplyFiles.ts:23

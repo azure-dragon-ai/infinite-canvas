@@ -204,3 +204,92 @@ users/{uid}/nonproject/sessions/{sid}/        普通会话（uploads/results/...
 - 全部改动文件 py_compile 通过，前端 vue-tsc + vite 通过，backend/celery 已重启生效
 
 遗留说明:① 旧前缀对象（projects/、uploads/、results/）按你的要求保留未删，确认稳定后可手动清理；② 会话 blocks 自由文本里的旧路径引用不做批量改写（旧对象保留 + 下载直通保证可访问）;③ 探查发现的几个死代码点（tool_bridge._tool_file_edit 的 get_storage 导入错误、snakemake_service.upload_fileobj 不存在、cognitive_tools.generate_code 4 参调用）属既有问题，本次未动。
+
+
+完成。docker-compose.yml 已开放 PostgreSQL 和 Redis 端口并重建生效：
+
+┌────────────┬────────────────────┬───────────────────────────────────────────────────────┐
+│    服务    │        容器        │                      宿主机端口                       │
+├────────────┼────────────────────┼───────────────────────────────────────────────────────┤
+│ PostgreSQL │ bioagent1-postgres │ localhost:5433(5432 被原项目 bioagent-postgres 占用） │
+├────────────┼────────────────────┼───────────────────────────────────────────────────────┤
+│ Redis      │ bioagent1-redis    │ localhost:6380(6379 被原项目 bioagent-redis 占用）    │
+└────────────┴────────────────────┴───────────────────────────────────────────────────────┘
+
+宿主机直连已验证可通。连接串：
+
+- PostgreSQL:postgresql://bioagent:bioagent_pass@localhost:5433/bioagent_os
+- Redis:redis://localhost:6380/0（注意本项目 celery 用 db1/db2：broker /1、result /2、缓存 /0)
+
+容器内服务间通信不受影响（仍走内部网络 postgres:5432 / redis:6379，配置无需动）。
+
+\d
+                      List of relations
+ Schema |             Name             |   Type   |  Owner   
+--------+------------------------------+----------+----------
+ public | alembic_version              | table    | bioagent
+ public | alerts                       | table    | bioagent
+ public | analyses                     | table    | bioagent
+ public | annotations                  | table    | bioagent
+ public | audit_logs                   | table    | bioagent
+ public | chat_checkpoints             | table    | bioagent
+ public | chat_messages                | table    | bioagent
+ public | chat_messages_id_seq         | sequence | bioagent
+ public | chat_sessions                | table    | bioagent
+ public | conversation_memories        | table    | bioagent
+ public | conversation_memories_id_seq | sequence | bioagent
+ public | cost_entries                 | table    | bioagent
+ public | data_layers                  | table    | bioagent
+ public | datasets                     | table    | bioagent
+ public | evaluation_results           | table    | bioagent
+ public | executors                    | table    | bioagent
+ public | experiment_checkpoints       | table    | bioagent
+ public | experiment_nodes             | table    | bioagent
+ public | experiments                  | table    | bioagent
+ public | llm_models                   | table    | bioagent
+ public | llm_request_logs             | table    | bioagent
+ public | memory_notes                 | table    | bioagent
+ public | message_feedback             | table    | bioagent
+ public | message_work_logs            | table    | bioagent
+ public | message_work_logs_id_seq     | sequence | bioagent
+ public | metric_entries               | table    | bioagent
+ public | notification_configs         | table    | bioagent
+ public | patients                     | table    | bioagent
+ public | pipeline_versions            | table    | bioagent
+ public | projects                     | table    | bioagent
+ public | reference_assets             | table    | bioagent
+ public | reflection_results           | table    | bioagent
+ public | samples                      | table    | bioagent
+ public | saved_pipelines              | table    | bioagent
+ public | session_files                | table    | bioagent
+ public | skill_definitions            | table    | bioagent
+ public | tasks                        | table    | bioagent
+ public | tenants                      | table    | bioagent
+ public | user_preferences             | table    | bioagent
+ public | user_preferences_id_seq      | sequence | bioagent
+ public | users                        | table    | bioagent
+(41 rows)
+
+完成。登录失效现在全链路自动跳登录页。
+
+现状与缺口
+
+axios 拦截器本来就有 401 处理（清 token + 跳登录页），缺口在裸 fetch 路径(SSE 流式、文件下载、预览拉取——<img>/下载不走 axios 拦截器），它们 401 时静默失败。
+
+改动
+
+- api/client.ts 新增 fetchWithAuth:401 → 清 token + 提示「登录已过期，请重新登录」+ 跳 /login，与 axios 拦截器同语义；自动带 Bearer
+- 全部裸 fetch 接入:
+  - useReplyFiles（文件下载/文本预览）
+  - ReportView（图片解析、CSV/文本预览、图表区 CSV、鉴权下载 4 处）
+  - SubPanel（实验 ZIP 导出）
+  - CodeBlockActions（代码块运行）
+  - TasksView（实验/任务状态轮询 2 处）
+  - api/index.ts 的 SSE 流式聊天（删掉重复的手写 401 块，统一走 helper)
+
+验证
+
+- 无头 Chrome：塞入过期 token 打开页面 → API 401 → 自动落到登录页 ✓
+- 构建（vue-tsc + vite）通过，dist 已生效
+
+现在无论哪个入口（页面加载、列表刷新、SSE 聊天、文件预览/下载），token 失效都会提示并跳回登录页。

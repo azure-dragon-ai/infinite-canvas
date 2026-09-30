@@ -419,13 +419,27 @@ Celery broker unavailable: task could not be queued
 普通会话，会话列表中关联项目按钮，点击后弹出关联项目弹窗，用户选择项目后，点击确认关联
 前端页面在右上角显示登录信息
 docker-compose.yml开放postgresql, redis端口
-工作类型
+发现大模型可能会在/app目录下创建文件，如：deg_final_moderated.csv
+1.如果需要创建文件，尽量使用minio
+2.如果必须在本地创建文件，请使用/app/workobjs目录，/app/workobjs为容器内目录，为了避免文件冲突，再创建一级会话ID目录，所需的文件全部放入会话ID目录下，完整路径如：/app/workobjs/{session_id}/deg_final_moderated.csv
+如果登录失效，应该跳转到登录页面，包括api请求时登录失效
+1.users表的role是否有实质作用？如果role只是显示将其改为role_type
+2.后台管理新增修改密码功能
+新增admins表，以区分普通用户和后台管理员
+后端无法登录了
+admins和users完全没有关系，后端登录使用admins表，为什么需要is_admin字段？
+http://localhost:5191/tables/users，操作增加修改密码
+http://localhost:5191/tables/users，操作增加修改密码，没有看到代码增加了button
+users表的role是否还有实质作用？如果role只是显示将其改为role_type
+前端页面右上角增加修改个人资料，修改密码功能
 Celery broker unavailable: task could not be queued
 存在单点问题，celery broker挂了，任务队列会挂，导致任务无法执行
 doc
 ```
 
 ```shell
+后台管理，users没有看到修改密码
+http://localhost:5191/tables/users，操作没有修改密码，http://localhost:5191/assets/CrudView-Bs8q5t_v.js这个代码是新的，有修改密码，但是页面上div class="cell"里面只有两个button
 生成下载命令，如wget url -o 1.mp4
 生成下载命令，如wget -O 1.mp4 url
 

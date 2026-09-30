@@ -244,6 +244,184 @@ llm_models，llm-settings统一到llm_models表中，baseurl还是为空，将�
 2.普通会话和项目会话，右侧面板增加项目信息，数据查看
 会话sess-1789980425654-hi4q75，问题仍然存在，大模型思考中显示了运行记录，大模型思考过程，但是刷新页面后大模型回复没有了，而用户提问有两个重复的记录，大模型回复“I've completed the analysis steps. Here's what I found based on the tool results above.”，这个回复是什么情况？请修复，不要再回复这种内容，使用用户提问测试“确认使用 library://CRA013121_rnaseq_mini 示例数据，对比组为 WT_CKD vs WT_CTRL，按 fastqc→multiqc→star_align→featurecounts→deseq2→volcano_plot→heatmap→gsea→report 构建完整流水线并立即执行”
 大模型循环跑满 5 轮工具调用上限是什么？删除次数限制
+普通会话和项目会话，用户点击编辑后发送，导致用户会话有两条记录，应该只保存一条
+会话sess-1789980425654-hi4q75，右侧面板显示没有运行记录，但是应该有运行失败的记录
+普通会话和项目会话，右侧面板内容尽量在右侧面板显示，不要链接到其他页面
+更新claude.md
+根因：后端 worker 容器在启动任何分析前，需要加载 backend/data/tools/*.yaml 工具定义文件，但该目录在当前部署中整体缺失（无 git 仓库可恢复，/app/data/ 下只有 skills 目录）。技能注册表（/app/data/skills/*.yaml，99 个技能）是完好的，但执行器依赖的底层 tool YAML 数据在 C1 版本重构后被移除且未随镜像发布。这是所有技能执行的共同前置依赖，因此任何流水线/单技能任务当前都会同样失败。
+查看bioagent-os的代码，补全功能，bioagent-os中含有BIOAGENT_CONDA_HOST_PATH配置
+bioagent-os/data下还有backend-cache, tmp, zarr等目录
+bioagent-os/backend/data下还有其它文件和目录，是否需要迁移
+根因诊断
+日志显示每个节点都报：
+
+DAG Node X/9: fastqc-1 (tool=, image=biocontainers/:latest)
+  Inputs declared: []
+  Outputs declared: []
+No command template for tool=
+问题：tool= 为空，image=biocontainers/:latest 镜像标签缺失，No command template 说明技能定义与工具注册表之间的映射仍然断裂。虽然 backend/data/tools/*.yaml 文件已恢复（109 个），但技能 YAML 中引用的 tool 名称与 tools 目录中的文件名不匹配，或技能定义缺少 tool 字段绑定。
+
+这是平台部署的第二层问题：文件恢复了，但技能→工具的映射关系未同步重建。
+查看backend/data/tools目录，大模型进行生物分析时使用
+普通会话和项目会话，会话列表，由于调整左侧panel区域大小，左侧区域过窄，导致看不到每个会话右侧三个点
+任务运行记录
+S3 operation failed; code: BadRequest, message: Bad request, resource: /bioagent-data/library%3A//CRA013121/CRR922183/CRR922183_f1.fq.gz, request_id: 18D7B766BC7279F0, host_id: dd9025bab4ad464b049177c95eb6ebf374d3b3fd1af9251148b658df7ac2e3e8, bucket_name: bioagent-data, object_name: library://CRA013121/CRR922183/CRR922183_f1.fq.gz
+library://开头不在minio中存储，应该读取机器目录，library://在容器内部其真实路径为/data/library，references://对应真实路径为/data/references
+分析结果文件预览显示地址为：
+blob:http://localhost:5190/930e7395-ebe3-4e2c-a6ff-657a3f08fee4
+导致浏览器下载文件而不是预览文件，请修复，比如使用minio开放地址访问
+普通会话和项目会话，会话列表，由于调整左侧panel区域大小，左侧区域过窄，导致看不到每个会话右侧三个点，和颜色没有关系，另外点击三个点，三个点怎么消失了，请修复
+build_pipeline 构建的 DAG 中 skill→tool 映射未正确传递
+Skill 'fastqc' requires input files but none were provided. params['input_files'] is empty. Provide real input data or set BIOAGENT_DEMO_MODE=1 to enable mock data generation.
+普通会话和项目会话，切换会话右侧预览应该跟当前会话一致，而不是显示切换前的会话预览，两外右侧面板和项目以及当前会话有关，比如运行记录不应该显示所有项目记录，而是当前会话相关的运行记录
+http://localhost:5190/api/v1/storage/download/projects/0f1811eb-.../d01bd472cf5e4b748e9402ff48ea709d_projects_..._config_metadata.csv
+Request method
+GET
+Status code
+404 Not Found
+文件404，请修复所有类似问题，也可以使用minio开放地址访问
+会话sess-1789980425654-hi4q75，会话有运行记录，但是右侧面板显示没有运行记录，但是应该有运行失败的记录
+导航栏运行记录，列表增加列显示关联会话，点击关联会话，跳转到会话
+运行记录表增加列保存关联会话
+报告表增加列保存关联会话
+网站请求无响应
+HuggingFace使用https://hf-mirror.com
+网站请求仍然无响应
+http://localhost:5190/tasks，加载没有响应
+运行记录表增加列保存关联会话
+报告表增加列保存关联会话
+更新代码后http://localhost:5190/tasks，页面一直加载中检查代码是否正常
+会话sess-1789980425654-hi4q75，执行失败，诊断报告：build_pipeline 节点 tool= 为空，请修复这个bug
+会话sess-1789980425654-hi4q75，运行了任务，但是运行记录中没有关联会话，数据表中没有数据，请修复bug
+普通会话和项目会话，每个会话鼠标悬停时，增加显示日期时间
+普通会话和项目会话，聊天记录鼠标悬停时，增加显示日期时间
+普通会话和项目会话，聊天记录鼠标悬停时，已经增加了显示日期时间，但是样式怎么更改了，应该还是在各自的聊天下方显示信息，怎么都居左了，另外将日期时间放在第一个位置
+普通会话和项目会话，生成的结果并没有保存为报告
+报告应体现pipeline哪一步产生了什么报告
+运行记录，数据表仍然没有记录会话id，会话执行了任务，任务应该记录哪个会话执行的，为什么始终没有数据，请修复bug
+1.导航栏运行记录，列表显示已经关联了会话，但是会话右侧面板当前会话没有运行记录，请修复
+2.普通会话和项目会话，右侧面板增加前进、后退、刷新按钮
+3.会话sess-1789980425654-hi4q75，大模型返回了产物文件，但是产物文件没有保存到报告，同时产物文件没有提供批量下载，产物文件浏览显示404，http://localhost:5190/api/v1/storage/download/results/final/report.md
+Request method
+GET
+Status code
+404 Not Found
+普通会话和项目会话，右侧面板前进、后退、刷新按钮单独一行显示
+普通会话和项目会话，当前会话左侧边框高亮显示，通过链接进入的会话没有高亮显示
+普通会话和项目会话，从其它地方点击进入会话，页面没有刷新，会话没有高亮显示
+导航栏运行记录，列表显示已经关联了会话，但是会话右侧面板没有运行记录，运行记录数据表已经存储会话id，会话右侧面板从数据表中取数为什么没有数据?
+http://localhost:5190/report?exp=fcd7cad0-b6fc-4cca-838f-b36f28ed7d59，所有图片都是空的
+http://minio:9000/bioagent-data/projects/2b5d5135-692e-46c4-88b9-153e65e10bb8/qc_phase1/figures/QC_heatmap_27samples.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=bioagent%2F20260924%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260924T080203Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=3ad4bb2f58a21678f93b4dadbd960abdb9209917d017a59908ba81117110dbfc，
+网页直接访问http://minio:9000是不通的，应该使用MINIO_PUBLIC_URL访问minio中的文件
+报告阅读，报告列表在鼠标悬停在报告后，在每个报告右侧增加三个点，点击三个点，应该显示查看会话等选项
+普通会话和项目会话，大模型回复中如果含有http://minio:9000输出，请使用MINIO_PUBLIC_URL访问minio中的文件，也就是https://bioagent-d.7otech.com
+报告阅读，报告列表在鼠标悬停在报告后，在每个报告右侧增加三个点，点击三个点，应该显示查看会话等选项，而不是在下方使用span class="sp-sess-link"
+报告阅读，应该支持csv和html等的预览，不仅仅是图片
+http://localhost:5190/report?exp=62f0a5d7-d854-4bcf-bf62-b2c185f85a8d
+div class="figwrap"，里面的csv和html没有显示
+报告阅读，目前只看到实验报告，应该包含任务报告和实验报告
+报告阅读，运行记录，列表均包含任务和实验，且通过tab的方式切换
+报告阅读，运行记录，增加过滤条件，项目会话过滤和普通会话过滤，使用select选择可清空
+报告阅读，运行记录，选择项目会话或普通会话后，应可以继续选择会话列表
+http://localhost:5190/report?exp=534fade9-75e9-4a0e-94ff-bd512dd6491f
+div class="figwrap"，里面的html没有显示
+普通会话和项目会话，大模型回复中如果含有图片，请限制图片宽度和高度，避免图片过宽或过高，可以通过预览查看大图
+重构minio目录结构
+1. 顶级目录users, public；目录说明：public目录设计为不需要授权访问，所有用户可访问
+2. users目录下为{user_id}目录，目录结构/users/{user_id}/，用户的数据都保存到用户id目录下，特别目录：users目录下包含alluser目录，用户存放所有用户可访问数据/users/alluser
+3. users/{user_id}/下目录包含projects；在projects/{project_id}目录下新增目录结构sessions/{session_id}/，和会话相关的所有文件保存到会话id目录下，避免文件名冲突，包括用户上传的数据，报告等，其中用户上传数据存到uploads，报告存到results，其余数据可以直接存放在sessions/{session_id}/下，完整目录示例：/users/{user_id}/projects/{project_id}/sessions/{session_id}/uploads
+4. users/{user_id}/projects包含datasets/{dataset_id}目录，当用户通过数据管理上传数据时，数据会保存到该目录下，完整目录示例：/users/{user_id}/projects/{project_id}/datasets/{dataset_id}/
+5. users/{user_id}/下目录包含nonproject；非项目会话即普通会话，保存到nonproject目录下，每个会话id目录下包含uploads，results等目录，完整目录示例：/users/{user_id}/nonproject/sessions/{session_id}/uploads
+6. 当用户将普通会话移到项目会话时，需要将普通会话中的数据迁移到项目会话目录下
+7. 将现有的数据根据新的目录结构，复制到新的目录下，注意是复制，要保证现有数据文件可访问，如果数据库变更简单，直接更新数据库记录为新目录结构
+8. 新的目录结构可以避免大部分文件冲突，但是如果存在文件名冲突，文件名中尽量包含日期和随机数以避免冲突，包括大模型自行构建的pipeline和脚本
+
+1.users/{user_id}/目录下没有看到nonproject目录，非项目会话即普通会话，保存到nonproject目录下，每个会话id目录下包含uploads，results等目录，完整目录示例：/users/{user_id}/nonproject/sessions/{session_id}/uploads
+2.users/{user_id}/uploads目前存的是什么
+chat_sessions数据表为什么那么多owner_id为空的数据，而且有一个id为undefined，系统需要登录使用，owner_id不能为空，project_id为空的为普通会话，minio中users/{user_id}/目录下没有看到nonproject目录
+llm_models数据表中的base_url默认应该有值，普通会话和项目会话返回前端的可用大模型列表应该仅显示api_key和base_url不为空的大模型，即使返回了也可以，但是前端选择框需要显示大模型不可用
+普通会话和项目会话，大模型回复的聊天记录鼠标悬停时，增加显示使用的是哪个大模型
+llm_models数据表增加模型gpt-5和gpt-6
+会话sess-1789650829623-1or4x9，用户使用gpt模型，大模型返回需要从互联网上获取图片，但是无法找到具体图片，提供tools等工具让大模型可以从互联网上获取任意内容
+会话sess-1789650829623-1or4x9，
+[thinking] 为了找到狂犬病病毒的外观图像，我将使用网络搜索工具进行搜索。
+
+<a [agent]: {"query": "rabies virus structure", "max_results": 2}
+gpt使用的啥工具？
+llm_models数据表中的temperature默认应该有值
+后端管理llm_request_logs按时间倒序排列
+llm_request_logs显示gpt-5的请求base_url是空的，但是chat_sessions记录的却是gpt-5
+1.请修复base_url为空的bug
+2.chat_sessions请记录真实的模型
+NotFoundError: Error code: 404 - {'error': {'message': 'The model `gpt-6` does not exist or you do not have access to it.', 'type': 'invalid_request_error', 'param': None, 'code': 'model_not_found'}}
+为什么选的gpt-5，llm_request_logs显示gpt-6
+当模型降级时，chat_session应该记录降级之后的模型
+1.会话sess-1789650829623-1or4x9，大模型回复是glm-4-flash返回的，但是chat_sessions记录的却是gpt-5
+2.gpt-5已改为gpt-5.5-pro，为什么还是gpt-5
+llm_models增加模型gpt-5.6-terra，gpt-5.6-luna
+BadRequestError: Error code: 400 - {'error': {'message': "Function tools with reasoning_effort are not supported for gpt-5.6-sol in /v1/chat/completions. To use function tools, use /v1/responses or set reasoning_effort to 'none'.", 'type': 'invalid_request_error', 'param': 'reasoning_effort', 'code': None}}
+gpt-5.6-sol请求报错
+http://localhost:5190/api/v1/storage/download/users/a8f6967f-206c-4b86-9356-892fb1d9bde0/projects/aa3516be-dc1c-4af2-be84-1a1efe4cf63d/sessions/sess-1789650829623-1or4x9/uploads/20260928_a196bfd1_Vesicular_stomatitis_virus__VSV__EM_18_lores.jpg?inline=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3OTA2NDcyNjksInN1YiI6ImE4ZjY5NjdmLTIwNmMtNGI4Ni05MzU2LTg5MmZiMWQ5YmRlMCJ9.7XARjFhjeglLiLXVx_jM_9YBHPKefkLx-JOfgxfE7Ic
+Request method
+GET
+Status code
+404 Not Found
+会话sess-1789650829623-1or4x9，大模型回复内容
+http://localhost:5190/api/v1/storage/download/users/a8f6967f-206c-4b86-9356-892fb1d9bde0/projects/aa3516be-dc1c-4af2-be84-1a1efe4cf63d/sessions/sess-1789650829623-1or4x9/uploads/20260928_a196bfd1_Vesicular_stomatitis_virus__VSV__EM_18_lores.jpg.jpg?inline=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3OTA2NDcyNjksInN1YiI6ImE4ZjY5NjdmLTIwNmMtNGI4Ni05MzU2LTg5MmZiMWQ5YmRlMCJ9.7XARjFhjeglLiLXVx_jM_9YBHPKefkLx-JOfgxfE7Ic
+Request method
+GET
+Status code
+404 Not Found
+新增会话文件表，记录会话中的文件，包括上传的文件，生成的报告，生成的产物文件等，必要字段包括用户ID，项目ID，会话id，会话类型（项目会话，普通会话），文件id，文件名，文件路径，文件大小，文件类型，文件创建时间，文件更新时间，文件删除时间等，如果是普通会话，项目ID可以为空，如果会话从普通会话移到项目会话，则更新项目ID
+会话文件，由于普通会话迁移到项目会话时，minio会迁移文件，所以会话文件表中的文件路径需要更新
+普通会话和项目会话，右侧面板新增会话文件列表，查看会话中所有文件
+普通会话和项目会话，右侧面板前进、后退、刷新按钮点击后没有反应
+普通会话和项目会话，右侧面板前进、后退、刷新按钮是用来控制右侧面板内用户的点击行为，比如文件tab页点击预览，进入预览tab页，再点后退应该回到文件tab页，而刷新应该是刷新右侧面板数据
+顶部切换项目点击无反应
+顶部切换项目只能点击文字才能切换项目
+会话sess-1789650829623-1or4x9，
+http://localhost:5190/api/v1/storage/preview/uploads/8fc772f6bc97429b812b939d2e05c944_fart_biology.png
+Request method
+GET
+Status code
+401 Unauthorized
+BadRequestError: Error code: 400 - {'error': {'message': "Function tools with reasoning_effort are not supported for gpt-6-astra in /v1/chat/completions. To use function tools, use /v1/responses or set reasoning_effort to 'none'.", 'type': 'invalid_request_error', 'param': 'reasoning_effort', 'code': None}}
+默认模型改为kimi-k3，普通会话和项目会话，应该使用用户选择的模型，包括重新生成等
+1.llm_models增加模型GLM-5.3-Flash，GLM-5.3
+2.模型降级只使用GLM-5.3-Flash，GLM-5.3
+llm_request_logs日志glm-5.3为什么请求的域名是https://api.kimi.com/coding
+前端选择GLM-5.3模型，刷新页面后又变更为kimi-k3，应该记录用户选择的模型，刷新页面后应该使用用户选择的模型
+普通会话和项目会话，选择模型分组显示，不再使用默认select框
+llm_models增加是否支持深度思考字段，值为1或0，1表示支持，0表示不支持，对于支持深度思考的模型，默认开启深度思考，在聊天记录中记录大模型的深度思考过程
+curl http://localhost:8090/v1/chat/completions  \
+    -H "Content-Type: application/json" \
+    -d '{
+        "model": "mlx-community/Qwen3.8-27B-bf16",
+        "messages": [
+            {"role": "user", "content": "你好"}
+        ],
+        "thinking": {"type": "disabled"}
+   }'
+本地8090是通的，为什么llm_request_logs日志显示localhost请求失败
+localhost本地大模型报错
+Error: Error code: 400 - {'error': {'message': 'System message must be at the beginning.', 'type': 'BadRequestError', 'param': None, 'code': 400}}
+使用localhost本地大模型，聊天记录显示是kimi-k3返回的，应该是localhost本地大模型返回的
+llm_request_logs增加记录请求参数的字段
+llm_request_logs为什么请求参数没有messages
+Celery broker unavailable: task could not be queued
+1. 任务需要重试，以防止服务不稳定导致任务失败
+2. 会话运行记录除了记录失败，也应该提供重新运行的功能，并通过会话通知用户
+1.普通会话和项目会话，会话文件需要区分是上传的文件，还是生成的报告，还是脚本，还是生成的产物文件等，查看是否已有字段区分
+2.minio新增产物目录workobjs，目录存放位置：项目会话/users/{user_id}/projects/{project_id}/sessions/{session_id}/workobjs，普通会话/users/{user_id}/nonproject/sessions/{session_id}/workobjs
+3.对于大模型自行编写的技能，pipeline，shell脚本，python脚本等保存到minio产物目录
+4.普通会话和项目会话，右侧面板文件列表，新增文件类型字段，用于区分是上传的文件，还是生成的报告，还是脚本，还是生成的产物文件等
+普通会话，会话列表三个点新增关联项目菜单
+普通会话，会话列表中关联项目按钮，点击后弹出关联项目弹窗，用户选择项目后，点击确认关联
+前端页面在右上角显示登录信息
+docker-compose.yml开放postgresql, redis端口
+工作类型
+Celery broker unavailable: task could not be queued
+存在单点问题，celery broker挂了，任务队列会挂，导致任务无法执行
 doc
 ```
 

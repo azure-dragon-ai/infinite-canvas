@@ -432,6 +432,7 @@ http://localhost:5191/tables/users，操作增加修改密码
 http://localhost:5191/tables/users，操作增加修改密码，没有看到代码增加了button
 users表的role是否还有实质作用？如果role只是显示将其改为role_type
 前端页面右上角增加修改个人资料，修改密码功能
+projects存在owner_id为空的数据，系统要求登录，owner_id为什么为空？
 Celery broker unavailable: task could not be queued
 存在单点问题，celery broker挂了，任务队列会挂，导致任务无法执行
 doc

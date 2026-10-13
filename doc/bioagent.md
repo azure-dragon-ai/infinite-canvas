@@ -433,6 +433,40 @@ http://localhost:5191/tables/users，操作增加修改密码，没有看到代�
 users表的role是否还有实质作用？如果role只是显示将其改为role_type
 前端页面右上角增加修改个人资料，修改密码功能
 projects存在owner_id为空的数据，系统要求登录，owner_id为什么为空？
+llm_request_logs日志，显示kimi-k3请求的temperature为1, 为什么？
+backend/workobjs目录下，仍然有很多文件不在会话下面，可能导致文件冲突，大模型执行自定义脚本尽量在会话目录下创建文件，或者使用日期和随机数创建目录，再关联到会话
+用户反馈，safari浏览器消息加载的时候，会话窗口会一直抖，忽上忽下，刷新页面，进入会话长的窗口会有这个情况
+有些分析需要GPU运算，目前系统在MacOS，Apple M3 Ultra，使用docker部署，docker已开启Docker Model Runner，系统需要支持GPU运算，使用MLX，另外对于使用cuda的机器，需要开启cuda支持，使用PyTorch等框架
+.env增加GPU_TYPE, WORKOBJS_HOST_PATH配置
+增加host.docker.internal 的 SSH 执行器
+http://localhost:5190/api/v1/datasets?projectId=aa3516be-dc1c-4af2-be84-1a1efe4cf63d
+Request method
+GET
+Status code
+502 Bad Gateway
+普通会话和项目会话，右侧面板预览增加py等文件，使用代码编辑器预览
+为什么在根目录下有一个package.json
+执行器增加是否gpu，gpu类型字段
+更新claude.md
+1.项目首页，起手改为项目介绍，可由大模型总结更新
+2.快捷动作，删除打开画布，增加项目会话
+项目首页，proj-card下项目描述不需要全部显示
+项目首页，项目介绍AI总结应该调用接口后局部更新，而不是新建会话，接口逻辑应该为读取项目会话、项目数据、项目运行记录等数据然后调用大模型总结项目介绍，更新数据库，返回总结结果
+项目首页，生物分析项目报告是空的，应该存在报告
+1.项目首页，在div class="ws-sec"上方增加常用操作，如：项目会话，突出显示
+2.项目首页，项目会话和长期记忆不需要显示所有，显示最新的几条即可
+项目首页，div class="hero-acts"中项目会话不需要突出显示，但是icon和左侧导航不一致
+1.项目会话，分析用户的聊天内容，对于可以长期复用的分析、环境等归纳总结为项目长期记忆，新增总结记忆并标记为系统总结，如果已经存在总结记忆可以尝试更新
+2.普通会话和项目会话，对于可以长期复用的分析技能，可以在系统中新增技能并标记为系统总结技能，如果技能需要文件存储，则存储到minio中，文件路径为：/skills/{skill_name}/，如：/skills/{skill_name}/test.py，其中skills为新增目录，{skill_name}同样为目录，需要保证唯一
+系统显示存在运行中任务，有些任务可能由于服务重启，已经没有继续执行了
+新增定时任务，每隔1小时执行，如果执行时间超过10小时，或无法重新执行的任务，更新任务为失败，检查任务队列，如果任务挂了可以重新执行，则重新提交任务队列，最多重试3次，如果重试失败，更新任务为失败，对于重新执行的任务或执行完成的任务需要通知到用户，在会话列表中增加提示
+http://localhost:5190/tasks/7e328ab7-fb9c-4765-b7af-9c6183ef1776
+该任务还在运行中，更新任务并标记为系统超时关闭
+http://localhost:5190/tasks
+1.页面显示5个进行中，什么情况？
+2.增加过滤查询，根据时间、任务状态查询任务
+http://localhost:5190/tasks，过滤查询增加会话查询，先选会话来源，再选择会话
+http://localhost:5190/tasks，过滤查询调整日期控件宽度，最大宽度300px
 Celery broker unavailable: task could not be queued
 存在单点问题，celery broker挂了，任务队列会挂，导致任务无法执行
 doc

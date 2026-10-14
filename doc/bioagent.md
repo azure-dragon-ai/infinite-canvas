@@ -467,6 +467,31 @@ http://localhost:5190/tasks
 2.增加过滤查询，根据时间、任务状态查询任务
 http://localhost:5190/tasks，过滤查询增加会话查询，先选会话来源，再选择会话
 http://localhost:5190/tasks，过滤查询调整日期控件宽度，最大宽度300px
+普通会话和项目会话，右侧面板选择tab后，刷新页面应该记住选择的tab，比如选择文件，刷新页面应该还是显示文件
+左侧导航按钮，普通会话、画布等有时候出现无法点击的情况
+查看GPU环境
+会话sess-1790671521448-v8d64e，提示无GPU环境，但是执行器中包含一个GPU执行环境mlx
+执行器增加使用ssh -i {identity_file}登录方式，数据库增加identity_file字段，另外backend/Dockerfile更新了内容
+执行器后台管理没有看到identity_file字段，目前系统存储的是密钥内容还是路径？
+#执行器identity_file为存储路径，如：/app/data/identity_file/studio_bridge，后台管理没有看到identity_file字段
+会话sess-1790671521448-v8d64e，ssh登录host.docker.internal仍然失败，而且使用root登录，而不是gliu，backend和Celery是一样的，backend路径/app/data/identity_file/studio_bridge可用
+宿主机，pip list|grep mlx
+mlx                                      0.32.3
+mlx-lm                                   0.32.0
+mlx-metal                                0.32.3
+(base) gliu@GdeMac-Studio biomedical-agent-os % which pip
+/Users/gliu/miniconda3/bin/pip
+会话sess-1790671521448-v8d64e，ssh登录host.docker.internal为什么用的是glinux， ssh glinux@host.docker.internal，应该是gliu
+项目首页，div class="hero-acts"下项目会话改为进入项目会话，而不是新建会话
+定时任务，执行时间超过10小时，更新任务为失败，改为168小时
+1.datasets，增加会话ID字段，对于通过会话上传的文件，应记录会话ID，同时将会话上传文件记录到会话默认数据集
+2.为什么数据集的source记录的都是upload？
+datasets，对于会话上传的文件，新建会话数据集，名字可以使用会话title，如：数据集-{session_title}，同一会话ID保存到同一会话数据集
+saved_pipelines，增加会话ID字段
+analyses，增加会话ID字段
+ssh -i /app/data/identity_file/studio_bridge gliu@host.docker.internal
+测试GPU是否可用
+免密登录为什么被拒？
 Celery broker unavailable: task could not be queued
 存在单点问题，celery broker挂了，任务队列会挂，导致任务无法执行
 doc

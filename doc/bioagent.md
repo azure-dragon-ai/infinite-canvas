@@ -489,6 +489,54 @@ mlx-metal                                0.32.3
 datasets，对于会话上传的文件，新建会话数据集，名字可以使用会话title，如：数据集-{session_title}，同一会话ID保存到同一会话数据集
 saved_pipelines，增加会话ID字段
 analyses，增加会话ID字段
+隐藏登录页演示账号：admin / admin123
+#普通会话和项目会话，对于大模型的回复尽量使用可视化输出，包括文字，比如使用html
+普通会话和项目会话，大模型回复确实使用了html，但是排版存在问题，请使用css等优化排版
+普通会话和项目会话，大模型回复使用了html，但是表格排版存在问题，列与列挨得太近，而且表格宽度没有跟随聊天框变宽，请使用css优化表格
+会话sess-1789650829623-1or4x9，table样式还是不对
+普通会话和项目会话
+1.右侧面板新增会话详情tab
+2.右侧面板文件改为产物
+3.将div class="cs-pin"中内容移动到会话详情tab中
+普通会话和项目会话，右侧面板会话详情，内容布局重新调整，增加产物说明、数据说明等信息
+会话sess-1788843010213-g2m9w6
+Request URL
+http://localhost:5190/api/v1/storage/download/users/a8f6967f-206c-4b86-9356-892fb1d9bde0/projects/0f1811eb-90d4-450f-9e92-917f40334732/sessions/sess-1788843010213-g2m9w6/results/atf3_lestaurtinib_3d/atf3_lestaurtinib_rep0_0ns.png?inline=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3OTIwNDE1NzcsInN1YiI6ImE4ZjY5NjdmLTIwNmMtNGI4Ni05MzU2LTg5MmZiMWQ5YmRlMCJ9.HVR-dPR2gfiJ2zk3SgCwfPunu0r1SKwXZBWi5sQ-TIY
+Request method
+GET
+Status code
+404 Not Found
+会话sess-1788843010213-g2m9w6
+Request URL
+http://localhost:5190/api/v1/storage/download/users/a8f6967f-206c-4b86-9356-892fb1d9bde0/projects/0f1811eb-90d4-450f-9e92-917f40334732/sessions/sess-1788843010213-g2m9w6/results/atf3_lestaurtinib_3d/atf3_lestaurtinib_rep0_1p03ns.png?inline=1&token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3OTIwNDE1NzcsInN1YiI6ImE4ZjY5NjdmLTIwNmMtNGI4Ni05MzU2LTg5MmZiMWQ5YmRlMCJ9.HVR-dPR2gfiJ2zk3SgCwfPunu0r1SKwXZBWi5sQ-TIY
+Request method
+GET
+Status code
+404 Not Found
+项目0f1811eb-90d4-450f-9e92-917f40334732长期记忆提到，在宿主机上使用了目录~/atf3md/atf3md/，宿主机请使用目录~/bioagent-workobjs，所有文件等放入~/bioagent-workobjs目录下
+将/Users/gliu/bioagent-workobjs目录映射到容器的/app/data/bioagent-workobjs目录
+Task timed out: experiment 45758064-9434-4706-9cce-8787b801f929 has been in state 'FAILED' for over 720 minutes. The Celery worker may have crashed or the task was lost. 720分钟是什么？不是168小时？
+1.重构数据集，新增数据集文件表datasets_files，将files中json数据迁移到datasets_files表中，记录数据集文件的路径、大小、类型等信息
+2.数据集文件表datasets_files，新增数据集ID，用户ID、项目ID、会话ID、创建时间、更新时间等字段，新增索引包括数据集ID、用户ID、项目ID、会话ID；新增pid、kind字段，pid为父ID，kind为文件类型，如：目录、文件等，和type不同，意味着数据集将支持文件夹，以方便用户浏览数据，pid为空为数据集第一级文件及文件夹，获取所有文件使用kind只获取文件数据
+后台管理无法查看数据集文件表
+1.数据管理，浏览tab中增加新建文件夹，上传文件，移动文件等功能
+2.minio存储说明，用户在数据集中新建文件夹，在{dataset_id}目录下也需要同步新建文件夹，文件夹路径为/users/{user_id}/projects/{project_id}/datasets/{dataset_id}/{folder_name}，文件夹名称为用户新建的文件夹名称，如果移动文件minio也同步移动并更新数据表minio存储路径
+普通会话和项目会话，数据集浏览不支持文件夹，期望支持文件夹
+1.重构会话文件，新增列消息ID，对于大模型回复时分析产出的文件，记录消息ID，后续可以根据消息ID查询产出文件
+2.大模型回复消息，悬停菜单增加消息产出文件查询，右侧产物tab展示根据消息id查询的产出文件
+3.会话文件新增pid、type字段，pid为父ID，type为文件类型，如：目录、文件等，意味着会话文件将支持文件夹，以方便用户浏览产出文件，pid为空为会话文件第一级文件及文件夹，获取所有文件使用type只获取文件数据
+4.大模型分析过程的所有产出文件，均保存到会话文件，在minio中放入processes目录，完整目录示例：/users/{user_id}/projects/{project_id}/sessions/{session_id}/processes，对于pipeline分析，每一步使用文件夹存储，比如1_read, 2_mapping等，每一步产出的文件放入对应文件夹，完整目录示例：/users/{user_id}/projects/{project_id}/sessions/{session_id}/processes/1_read
+5.minio存储说明，大模型回复在会话文件中新建文件夹，在processes目录下也需要同步新建文件夹，文件夹路径为/users/{user_id}/projects/{project_id}/sessions/{session_id}/processes/{folder_name}，文件夹名称为大模型新建的文件夹名称，如果移动文件minio也同步移动并更新数据表minio存储路径
+会话sess-1788843010213-g2m9w6，
+最后一条大模型回复消息，有多个文件，该消息id对应产出文件只有1个，是否正确
+数据集文件，新增列消息ID，如果大模型回复消息中保存了数据集文件，同时记录消息ID，后续可以根据消息ID查询数据集文件
+1.增加会话队列管理，基本数据包括：用户ID、项目ID、会话ID、消息ID、执行器ID、是否GPU运行、任务ID，任务信息、任务状态、创建时间、更新时间等字段，同一个会话只能同时执行一个分析任务，如果会话中已经有一个分析任务在执行，后续的分析任务添加到队列，需要等待当前分析任务完成才能执行下一个，也就是排队，后台可以查看会话队列
+2.运行记录、任务、实验、报告均增加执行器ID，是否GPU字段
+3.执行器MLX，一次只能执行一个分析任务，多个会话同时调用GPU存在问题，执行器增加支持并发任务数，运行中任务数字段，对于MLX执行器，最大并发任务数为1，超过1个任务，则进入队列等待，直到执行器空闲
+普通会话和项目会话，右侧会话详情，增加会话队列展示
+用户自己选择GLM-5.3模型，就不要显示降级了，只有用户选择的模型报错，而使用了其它模型才显示降级
+1.新增用户技能表，已有技能主要为生物分析，用户技能则可以添加任何技能，比如用户使用提示词安装技能“请根据 https://skillhub.cn/install/skillhub.md，安装 @indiv-integrator/dev-expert-pro”，参考harness实现，基本数据包括：用户ID、技能名称、技能描述、技能地址、安装时间、创建时间、更新时间等字段，用户技能只能用户有效，可以增加一个系统用户，该用户下技能为系统技能，所有用户可见，技能文件存储在minio中
+2.minio存储说明，用户技能存储路径为/users/{user_id}/skills/{skill_name}，系统技能存储路径为/system_skills/{skill_name}
 ssh -i /app/data/identity_file/studio_bridge gliu@host.docker.internal
 测试GPU是否可用
 免密登录为什么被拒？

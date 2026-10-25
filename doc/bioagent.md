@@ -622,6 +622,115 @@ GET
 Status code
 500 Internal Server Error
 用户反馈会话页面有时候会看到load fail，大模型回复就没有了，刷新页面才有
+chroma-admin报错
+curl [http://localhost:8011/api/v1/heartbeat](http://localhost:8011/api/v1/heartbeat)
+{"error":"Unimplemented","message":"The v1 API is deprecated. Please use /v2 apis"}
+将chroma-admin改为vectoradmin或Chroma Walnut UI
+{
+    "connector": null,
+    "error": "Headers.append: \"test@7otech.com\" is an invalid header name."
+}
+chroma怎么连接
+vector-admin无法启动
+curl --url 'http://localhost:8012/api/v1/org/bioagent/add-connection' \
+  -H 'Accept: */*' \
+  -H 'Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ0ZXN0QDdvdGVjaC5jb20iLCJpYXQiOjE3OTI2MDI0MzMsImV4cCI6MTc5NTE5NDQzM30.3WmAPTOSn5_3rDEJS7mG2sUkxswj6tvwvCGEID8epuU' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: text/plain;charset=UTF-8' \
+  -H 'Origin: http://localhost:8012' \
+  -H 'Pragma: no-cache' \
+  -H 'Referer: http://localhost:8012/onboarding-setup' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36' \
+  -H 'requester-email: test@7otech.com' \
+  -H 'sec-ch-ua: "Google Chrome";v="155", "Chromium";v="155", "Not(A:Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  --data-raw '{"config":{"type":"chroma","settings":{"instanceURL":"http://172.30.10.12:8000","authTokenHeader":"","authToken":""}}}'
+{
+    "connector": null,
+    "error": "Could not connect to Chroma instance with those credentials."
+}
+知识库
+向量库或嵌入模型不可用（chroma / EMBED_MODEL）
+将容器时区改为东八区
+知识库，平台使用手册，有两个文件显示失败为什么？
+#大模型回复没有消耗积分
+积分明细大模型调用消耗（unknown），为什么显示unknown?
+会话sess-1788843010213-g2m9w6，用户反馈，大模型回复没有思考中了，刷新页面才显示回复，猜测可能是思考结束后，大模型回复没有显示在页面上
+假如同一个用户在两台设备上登录，一个设备提问，当前设备显示思考中没有问题，但是另一个设备如何同步显示信息？是否可以实现？
+Uncaught (in promise) ReferenceError: Cannot access 'ge' before initialization
+    at ct (useAgentEnv-BUazTSfT.js:8:9370)
+    at Qe.immediate (useAgentEnv-BUazTSfT.js:8:7475)
+    at Pc (index-Wob9ZV9E.js:14:38)
+    at xs (index-Wob9ZV9E.js:14:109)
+    at Ip.r.call (index-Wob9ZV9E.js:14:3635)
+    at S (index-Wob9ZV9E.js:10:16955)
+    at L3 (index-Wob9ZV9E.js:10:17169)
+    at Ip (index-Wob9ZV9E.js:14:3836)
+    at he (index-Wob9ZV9E.js:14:3342)
+    at setup (useAgentEnv-BUazTSfT.js:8:7447)
+消息增加轮询后，如果SSE流和轮询同时返回数据，会有问题吗？
+普通会话和项目会话，其它设备轮询消息时，将思考中改为思考中（其它设备正在进行对话）
+会话sess-1790237859704-u7ubmc
+为什么大模型回复“抱歉，处理消息时遇到了问题。请重新描述你的需求。”
+消息轮询有bug，消息已经增加了好几条包括用户提问，大模型回复，但是其它设备没有更新，需要刷新页面才能显示
+普通会话和项目会话，大模型回复中链接按钮等点击后应尽量在右侧面板显示数据，不要跳转页面，比如查看任务，运行记录等
+普通会话和项目会话，新会话应该根据聊天内容自动重新命名，会话表增加会话描述字段，右侧面板会话详情，提供按钮AI重命名和AI总结，分别更新会话名称和会话描述
+普通会话和项目会话，下方建议，在“生成质控报告”按钮后增加一个查进度按钮，在输入框中添加文字“进度如何”
+普通会话和项目会话，右侧面板会话详情，AI重命名和AI总结点击后应将按钮disabled，并在按钮中文字前面增加loading状态
+降级优先使用GLM-5.3
+会话sess-1788843010213-g2m9w6和sess-1790237859704-u7ubmc
+1.均存在Celery执行失败的情况，如果存在资源使用限制，增加系统资源
+2.后台增加监控功能，显示各系统cpu和内存使用情况，监控celery任务队列
+系统监控不需要一次加载所有容器数据，列出所有容器，点击容器可以查看详细信息
+系统监控将容器列表保存到数据库，提供按钮同步列表，自动刷新默认关闭
+http://localhost:5191/monitor，页面刷新还是很慢，不是读取数据库吗？
+消息轮询，其它设备有新消息时，应提示用户向下滚动浏览新消息
+会话sess-1790237859704-u7ubmc
+提示⚠️ 实验「哮喘单细胞：检查点核验及两套独立标志基因注释续跑」执行失败。
+
+错误：权限不足
+
+Recovery suggestion: 当前用户没有执行该分析的权限。请联系项目管理员授权。
+
+可以点击下方按钮直接重新运行（按原参数克隆重跑），或告诉我修正参数后重跑。
+为什么权限不足？
+增加系统配置表，主要字段：key、value、描述、创建时间、更新时间，key为配置项，value为配置值，使用redis缓存，增加是否启动安全钩子配置项，不开启则允许subprocess等执行
+
+会话sess-1790237859704-u7ubmc
+⚠️ 实验「Python Script Execution Analysis」执行失败。
+
+错误：Celery result backend returned corrupted data for task 588d675b-e011-4f5a-801c-949bd21c3748: Exception information must include the exception type. The task may have crashed or been lost.
+
+可以点击下方按钮直接重新运行（按原参数克隆重跑），或告诉我修正参数后重跑。
+为什么执行失败了？
+知识库文档提供按钮，向量化处理，点击后，将文档内容向量化，保存到向量库
+提供向量化查询功能，从向量库中查询最相关的文档
+知识库文档增加向量化状态（0-未向量化 1-向量化中 2-向量化完成 10-向量化失败）、向量化进度字段
+#会话sess-1790237859704-u7ubmc
+#会话列表显示任务失败，但是已经删除了之前的聊天记录，大模型已重新回复并运行任务
+普通会话和项目会话，SSE流正在输出时，禁止页面刷新提示用户等待
+知识库，增加div class="kb-list"的宽度
+右上角增加主题切换按钮，点击后切换主题，主题包括：默认、暗黑、亮色
+主题切换时，需要给出提示动画
+主题切换时，切换主题按钮改为disabled状态，增加loading状态，切换完成后，将按钮改为enabled状态
+会话sess-1790237859704-u7ubmc
+产出图片有乱码，容器需要支持中文
+kimi-k3请求报错
+BadRequestError: Error code: 400 - {'error': {'message': 'tool_call_id  is not found', 'type': 'invalid_request_error'}}
+cost_entries，后台记录glm, kimi-k3的cost有bug，应该是kimi, kimi-k3
+reflection_results，后台validation_status基本是fail，为什么？
+1.系统配置表，增加大模型是否降级配置，降级则在大模型报错时，使用降级模型，否则提示用户大模型报错信息
+2.模型表增加模型恢复访问时间字段，比如模型返回，Error: Error code: 429 - {'error': {'code': '1316', 'message': '已达到5小时使用上限。主账号余额不足，无法使用超额按量付费。您的限额将在 2026-10-24 15:22:12 重置。'}}，恢复时间为2026-10-24 15:22:12，如果恢复了将该字段内容清空，该限制适用降级模型
+3.降级模型增加local的mlx-community/Qwen3.8-27B-bf16，local为本地provider
+模型mlx-community/Qwen3.8-27B-8bit请求超时为什么？
+llm_request_logs增加响应时长字段
+降级模型从mlx-community/Qwen3.8-27B-bf16改为mlx-community/Qwen3.8-27B-8bit
 ssh -i /app/data/identity_file/studio_bridge gliu@host.docker.internal
 测试GPU是否可用
 免密登录为什么被拒？

@@ -731,6 +731,19 @@ reflection_results，后台validation_status基本是fail，为什么？
 模型mlx-community/Qwen3.8-27B-8bit请求超时为什么？
 llm_request_logs增加响应时长字段
 降级模型从mlx-community/Qwen3.8-27B-bf16改为mlx-community/Qwen3.8-27B-8bit
+普通会话和项目会话，大模型思考中时将发送按钮改为停止按钮，点击后停止大模型思考、停止任务等操作
+普通会话和项目会话，右侧面板产物，增加日期过滤功能
+普通会话和项目会话，SSE流正在输出时，禁止用户跳转到其它页面提示用户等待，提示框提供两个按钮，继续等待和仍要访问，用户访问其它页面需要保存用户会话状态，再次回到会话页面，如果大模型还在思考中应继续显示SSE流，如果无法继续显示SSE流至少需要显示思考中
+#会话sess-listfix-test-1792638254
+#还在思考中，llm_request_logs显示已经请求失败了
+llm_request_logs改为请求发起前先记录请求地址、请求参数等，请求完成后记录响应参数，包括响应时长等
+普通会话和项目会话，每次重新进入会话页面，是否存在消息轮询，刷新会话页面可以看到轮询消息，当时在会话页面点左侧导航访问其它页面再回到会话页面没有看到轮询
+普通会话和项目会话，大模型思考中时发送按钮改为了停止按钮，但是点了停止按钮，还在显示思考中
+https://bioagent-new.7otech.com/api/v1/auth/login
+Request method
+POST
+Status code
+502 Bad Gateway
 ssh -i /app/data/identity_file/studio_bridge gliu@host.docker.internal
 测试GPU是否可用
 免密登录为什么被拒？

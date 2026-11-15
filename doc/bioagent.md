@@ -770,6 +770,10 @@ JSON
 {
   "error": "下载失败：GeoImporter._download_to_storage() got an unexpected keyword argument 'session_id'"
 }
+admin角色似乎能看所有用户的项目，但是项目首页应该只显示当前用户的项目，左侧导航单独为admin提供一个页面，可以查看所有用户的项目，并且要显示用户名，整体布局同项目首页，同样可以切换项目
+admin角色似乎能看所有用户的普通会话，需要显示用户名，并增加用户名过滤
+左侧导航单独为admin提供一个页面，可以查看所有用户的普通会话，并且要显示用户名，整体布局同普通会话
+左侧导航单独为admin提供一个页面，可以查看所有用户的项目会话，目前可以查看所有项目，选择项目后，项目会话看不到但其实有项目会话，并且要显示用户名，整体布局同项目会话
 ssh -i /app/data/identity_file/studio_bridge gliu@host.docker.internal
 测试GPU是否可用
 免密登录为什么被拒？

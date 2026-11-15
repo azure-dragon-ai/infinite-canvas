@@ -744,6 +744,32 @@ Request method
 POST
 Status code
 502 Bad Gateway
+更新claude.md
+系统定位不再局限于生物分析，而是科研平台AI4S，参考文档
+https://chatgpt.com/share/e/6ae82b10-f7d4-83ee-b139-74db1dac1df3，如果无法访问则参考本地文档
+docs/国际AI4S方向设计.html
+docs/BioBench_v3.3_报告版.html
+增加biobench，biobench为独立系统，与bioagent系统分离
+biobencn增加管理后台
+会话sess-1793676956124-quscxp
+read_file报错
+上传的excel文件应该在会话消息中显示，用户点击发送按钮后，输入框应该清空上传的文件
+普通会话和项目会话，有时候页面会显示load fail，不要显示load fail可以后台记录报错日志
+1.普通会话和项目会话，当用户切换到其它页面时，需要保存用户会话状态，再次回到会话页面，如果大模型还在思考中应继续显示SSE流，比如将会话最小化等
+2.用户发送多条消息时，应排队处理，大模型一次只能处理一条消息
+3.轮询消息，大模型已经回复了，但是会话还在显示思考中
+#数据管理，点击后导航栏进入后，显示数据集文件数：1，但是列表时空的，刷新页面才有数据
+http://localhost:5190/data
+第一次进入，数据集默认选中了第一个，显示有文件数，但是文件列表为空，没有请求http://localhost:5190/api/v1/datasets/f16bab80-ef24-4360-baa1-84b2634b5a82/files
+目前系统上传文件大小限制多少？
+新增几个测试用户，角色为biouser
+用户反馈
+fetch_url 返回（完整 JSON 已存入思考过程）
+20:35:23
+JSON
+{
+  "error": "下载失败：GeoImporter._download_to_storage() got an unexpected keyword argument 'session_id'"
+}
 ssh -i /app/data/identity_file/studio_bridge gliu@host.docker.internal
 测试GPU是否可用
 免密登录为什么被拒？

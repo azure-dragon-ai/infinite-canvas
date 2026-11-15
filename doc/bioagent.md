@@ -774,6 +774,8 @@ admin角色似乎能看所有用户的项目，但是项目首页应该只显示
 admin角色似乎能看所有用户的普通会话，需要显示用户名，并增加用户名过滤
 左侧导航单独为admin提供一个页面，可以查看所有用户的普通会话，并且要显示用户名，整体布局同普通会话
 左侧导航单独为admin提供一个页面，可以查看所有用户的项目会话，目前可以查看所有项目，选择项目后，项目会话看不到但其实有项目会话，并且要显示用户名，整体布局同项目会话
+普通会话和项目会话
+有用户反馈上传pdf或txt后，报错Error: Error code: 400 - {'error': {'code': '1261, 'message': 'Prompt exceeds max length'}}，说明prompt包含了上传文件，尽量使用公开可访问的url传递给大模型，此项目外网域名https://bioagent-new.7otech.com/
 ssh -i /app/data/identity_file/studio_bridge gliu@host.docker.internal
 测试GPU是否可用
 免密登录为什么被拒？
